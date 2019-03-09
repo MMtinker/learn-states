@@ -8,14 +8,22 @@ def index():
 @app.route('/states/', methods=['post', 'get'])
 def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
     message =''
+
+    if session.get('reset'):
+        session['reset'] = False
+        statesGuess.clear()
+
     if request.method == 'POST':
         # read the posted values from the UI
         _name = request.form.get('stateName')
         _reset = request.form.get('reset') != None
-        print(f'Got value: {_name}')
-        print(f'Check box: {_reset}')
+        # print(f'Got value: {_name}')
+        # print(f'Check box: {_reset}')
         if _reset:
-            statesGuess.clear()
+            session['statesGuess'] = statesGuess
+            print(f'SESSIONS STATESGUESS VALUE: {session["statesGuess"]}')
+            return redirect(url_for('reset'))
+
         if _name in stateList:
             if _name in statesGuess:
                 message = f'You already have guessed {_name}. Try again...'
@@ -32,18 +40,11 @@ def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
     return render_template('states.html', message=message, statesLeft=statesLeft, statesGuess=statesGuess)
 
 
-@app.route('/update',methods=['POST'])
-def update():
+@app.route('/reset', methods=['post', 'get'])
+def reset():
 
-    print("Update method")
-
-    if request.method == 'POST':
-        # read the posted values from the UI
-        _name = request.form['inputName']
-        print(f'Got value: {_name}')
-        statesLeft = _name
-        return redirect(url_for('states', statesLeft=_name))
+    session['reset'] = True
+    statesGuess = session.get('statesGuess')
 
 
-    # return redirect(url_for('beginStates', statesLeft=statesLeft))
-    return render_template('states.html', statesLeft=statesLeft)
+    return render_template('giveup.html', stateList=stateList, statesGuess=statesGuess)

@@ -1,7 +1,14 @@
-from flask import Flask, render_template, request, json, redirect, url_for
+from flask import Flask, render_template, request, json, redirect, url_for, session
+import itertools
 
+consequent_integers = itertools.count()
+
+def random():
+    session['number'] = consequent_integers.next()
+    return None
 
 app = Flask(__name__)
+app.secret_key = 'my_Secr3t_key'
 from views import *
 
 statesGuess = []

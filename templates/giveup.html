@@ -8,6 +8,11 @@
 
       <!--<script src="../static/js/jquery-3.3.1.js"></script>-->
       <!--<script src="../static/js/submitState.js"></script>-->
+      <script type="text/javascript">
+        document.getElementById("btnTryAgain").onclick = function () {
+            location.href = "/states";
+            };
+        </script>
 
   </head>
 
@@ -24,20 +29,16 @@
       </div>
 
       <div class="jumbotron">
-        <h1>Enter State</h1>
-        <h3>States left to guess: {{statesLeft}}</h3>
-        {% if message %}
-          <p>{{ message }}</p>
-        {% endif %}
-        <form class="form-signin" action="" method="post">
-        <label for="stateName" class="sr-only">State Name</label>
-        <input autofocus class="form-control" id="stateName" name="stateName" placeholder="State Name"
-               type="text">
+        <h1>This is what you have missed:</h1>
+
+        {% for state in stateList %}
+          {% if state not in statesGuess %}
+          <p>{{ state }}</p>
+          {% endif %}
+        {% endfor %}
         <p> </p>
-        <button class="btn btn-lg btn-primary btn-block" id="btnState" type="submit">Submit</button>
-          <p></p>
-          <input type="checkbox" name="reset"> Give up?
-        </form>
+          <button class="btn btn-lg btn-primary btn-block" onclick="window.location.href='/states/'">Try again</button>
+
       </div>
 
 
