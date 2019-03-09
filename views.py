@@ -11,7 +11,11 @@ def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
     if request.method == 'POST':
         # read the posted values from the UI
         _name = request.form.get('stateName')
+        _reset = request.form.get('reset') != None
         print(f'Got value: {_name}')
+        print(f'Check box: {_reset}')
+        if _reset:
+            statesGuess.clear()
         if _name in stateList:
             if _name in statesGuess:
                 message = f'You already have guessed {_name}. Try again...'
@@ -20,7 +24,10 @@ def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
                 statesGuess.append(_name)
         else:
             message = 'Try again...'
+
     statesLeft = len(stateList) - len(statesGuess)
+    if statesLeft == 0:
+        message = 'YOU DID IT! GREAT JOB!'
 
     return render_template('states.html', message=message, statesLeft=statesLeft, statesGuess=statesGuess)
 
