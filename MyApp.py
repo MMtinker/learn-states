@@ -57,14 +57,15 @@ stateList=[
     'Wyoming'
 ]
 
-def random():
-    session['number'] = consequent_integers.next()
-    return None
 
 app = Flask(__name__)
 app.secret_key = 'my_Secr3t_key'
 # from views import *
 # TEMP
+
+def random():
+    session['number'] = consequent_integers.next()
+    return None
 
 @app.route('/')
 def index():
@@ -108,7 +109,7 @@ def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
         message=message,
         statesLeft=statesLeft,
         statesGuess=statesGuess,
-        session=session
+        sessionNr=session['number']
     )
 
 
