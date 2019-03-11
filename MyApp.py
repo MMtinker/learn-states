@@ -2,15 +2,6 @@ from flask import Flask, render_template, request, json, redirect, url_for, sess
 import itertools
 
 consequent_integers = itertools.count()
-
-def random():
-    session['number'] = consequent_integers.next()
-    return None
-
-app = Flask(__name__)
-app.secret_key = 'my_Secr3t_key'
-from views import *
-
 statesGuess = []
 stateList=[
     'Alabama',
@@ -64,6 +55,16 @@ stateList=[
     'Wisconsin',
     'Wyoming'
 ]
+
+def random():
+    session['number'] = consequent_integers.next()
+    return None
+
+app = Flask(__name__)
+app.secret_key = 'my_Secr3t_key'
+from views import *
+
+
 
 if __name__ == '__main__':
     # app.run(debug=True)
