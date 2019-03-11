@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, json, redirect, url_for, session
+#from flask import Flask, render_template, request, json, redirect, url_for, session
+import flask
 import itertools
 
 consequent_integers = itertools.count()
@@ -102,7 +103,13 @@ def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
     if statesLeft == 0:
         message = 'YOU DID IT! GREAT JOB!'
 
-    return render_template('states.html', message=message, statesLeft=statesLeft, statesGuess=statesGuess)
+    return render_template(
+        'states.html',
+        message=message,
+        statesLeft=statesLeft,
+        statesGuess=statesGuess,
+        session=session
+    )
 
 
 @app.route('/reset', methods=['post', 'get'])
