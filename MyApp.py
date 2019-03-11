@@ -1,8 +1,9 @@
 #from flask import Flask, render_template, request, json, redirect, url_for, session
 from flask import *
-import itertools
+import os
+# import itertools
 
-consequent_integers = itertools.count()
+# consequent_integers = itertools.count()
 statesGuess = []
 stateList=[
     'Alabama',
@@ -59,13 +60,14 @@ stateList=[
 
 
 app = Flask(__name__)
-app.secret_key = 'my_Secr3t_key'
+app.secret_key = os.urandom(16)
+
 # from views import *
 # TEMP
 
-def random():
-    session['number'] = consequent_integers.next()
-    return None
+# def random():
+#     session['number'] = consequent_integers.next()
+#     return None
 
 @app.route('/')
 def index():
@@ -75,6 +77,8 @@ def index():
 @app.route('/states', methods=['post', 'get'])
 def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
     message =''
+    if 'number' not in session:
+        session['number'] = os.urandom(6)
 
     if session.get('reset'):
         session['reset'] = False
@@ -129,4 +133,5 @@ def reset():
 if __name__ == '__main__':
     # app.run(debug=True)
     # app.run(threaded=True)
+    # app.secret_key = consequent_integers.next()
     app.run()
