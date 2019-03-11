@@ -1,5 +1,5 @@
 #from flask import Flask, render_template, request, json, redirect, url_for, session
-import flask
+from flask import *
 import itertools
 
 consequent_integers = itertools.count()
