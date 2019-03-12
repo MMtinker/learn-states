@@ -83,11 +83,14 @@ def states( ):
 
     if 'statesGuess' not in session:
         session['statesGuess'] = []
+    else:
+        statesGuess = session['statesGuess']
+
     # statesLeft = len(stateList) - len(session['statesGuess'])
 
     if session.get('reset'):
         session['reset'] = False
-        session['statesGuess'].clear()
+        statesGuess.clear()
 
     if request.method == 'POST':
         # read the posted values from the UI
@@ -101,15 +104,15 @@ def states( ):
             return redirect(url_for('reset'))
 
         if _name in stateList:
-            if _name in session['statesGuess']:
+            if _name in statesGuess:
                 message = f'You already have guessed {_name}. Try again...'
             else:
                 message = 'You got it!'
-                session['statesGuess'].append(_name)
+                statesGuess.append(_name)
         else:
             message = 'Try again...'
 
-    statesLeft = len(stateList) - len(session['statesGuess'])
+    statesLeft = len(stateList) - len(statesGuess)
     if statesLeft == 0:
         message = 'YOU DID IT! GREAT JOB!'
 
@@ -117,7 +120,7 @@ def states( ):
         'states.html',
         message=message,
         statesLeft=statesLeft,
-        statesGuess=session['statesGuess'],
+        statesGuess=statesGuess,
         sessionNr=session['number']
     )
 
