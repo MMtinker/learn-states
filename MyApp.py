@@ -60,7 +60,8 @@ stateList=[
 
 
 app = Flask(__name__)
-app.secret_key = os.urandom(16)
+# app.secret_key = os.urandom(16)
+app.secret_key = 'mY_s3cr3t@!'
 
 # from views import *
 # TEMP
