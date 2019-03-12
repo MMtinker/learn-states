@@ -76,14 +76,18 @@ def index():
     return '<h1>Hello</h1>'
 
 @app.route('/states', methods=['post', 'get'])
-def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
+def states( ):
     message =''
     if 'number' not in session:
         session['number'] = os.urandom(6)
 
+    if 'statesGuess' not in session:
+        session['statesGuess'] = []
+    # statesLeft = len(stateList) - len(session['statesGuess'])
+
     if session.get('reset'):
         session['reset'] = False
-        statesGuess.clear()
+        session['statesGuess'].clear()
 
     if request.method == 'POST':
         # read the posted values from the UI
@@ -93,19 +97,19 @@ def states(statesGuess=[], statesLeft=len(stateList)-len(statesGuess)):
         # print(f'Check box: {_reset}')
         if _reset:
             session['statesGuess'] = statesGuess
-            print(f'SESSIONS STATESGUESS VALUE: {session["statesGuess"]}')
+            # print(f'SESSIONS STATESGUESS VALUE: {session["statesGuess"]}')
             return redirect(url_for('reset'))
 
         if _name in stateList:
-            if _name in statesGuess:
+            if _name in session['statesGuess']:
                 message = f'You already have guessed {_name}. Try again...'
             else:
                 message = 'You got it!'
-                statesGuess.append(_name)
+                session['statesGuess'].append(_name)
         else:
             message = 'Try again...'
 
-    statesLeft = len(stateList) - len(statesGuess)
+    statesLeft = len(stateList) - len(session['statesGuess'])
     if statesLeft == 0:
         message = 'YOU DID IT! GREAT JOB!'
 
