@@ -96,7 +96,7 @@ def states( ):
         # print(f'Got value: {_name}')
         # print(f'Check box: {_reset}')
         if _reset:
-            session['statesGuess'] = statesGuess
+            # session['statesGuess'] = statesGuess
             # print(f'SESSIONS STATESGUESS VALUE: {session["statesGuess"]}')
             return redirect(url_for('reset'))
 
@@ -117,7 +117,7 @@ def states( ):
         'states.html',
         message=message,
         statesLeft=statesLeft,
-        statesGuess=statesGuess,
+        statesGuess=session['statesGuess'],
         sessionNr=session['number']
     )
 
