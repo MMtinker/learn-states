@@ -1,10 +1,10 @@
 #from flask import Flask, render_template, request, json, redirect, url_for, session
-from flask import *
+from flask import Flask, session, render_template, redirect, url_for, request
 import os
 # import itertools
 
 # consequent_integers = itertools.count()
-statesGuess = []
+# statesGuess = []
 stateList=[
     'Alabama',
     'Alaska',
@@ -72,17 +72,19 @@ app.secret_key = 'mY_s3cr3t@!'
 
 @app.route('/')
 def index():
+    return redirect(url_for('states'))
+#
+#     return '<h1>Hello</h1>'
 
-    return '<h1>Hello</h1>'
-
-@app.route('/states', methods=['post', 'get'])
-def states( ):
+@app.route('/states', methods=['POST', 'GET'])
+def states():
     message =''
     if 'number' not in session:
         session['number'] = os.urandom(6)
-
+    # print(session.get(statesGuess))
     if 'statesGuess' not in session:
         session['statesGuess'] = []
+        statesGuess = []
     else:
         statesGuess = session['statesGuess']
 
@@ -95,7 +97,7 @@ def states( ):
     if request.method == 'POST':
         # read the posted values from the UI
         _name = request.form.get('stateName')
-        _reset = request.form.get('reset') != None
+        _reset = request.form.get('reset')
         # print(f'Got value: {_name}')
         # print(f'Check box: {_reset}')
         if _reset:
@@ -115,6 +117,8 @@ def states( ):
     statesLeft = len(stateList) - len(statesGuess)
     if statesLeft == 0:
         message = 'YOU DID IT! GREAT JOB!'
+    else:
+        session['statesGuess'] = statesGuess
 
     return render_template(
         'states.html',
@@ -139,7 +143,7 @@ def reset():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True)
+    app.run(debug=True)
     # app.run(threaded=True)
     # app.secret_key = consequent_integers.next()
-    app.run()
+    # app.run()
