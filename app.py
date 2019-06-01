@@ -143,7 +143,7 @@ def reset():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
     # app.run(threaded=True)
     # app.secret_key = consequent_integers.next()
-    # app.run()
+    app.run()
